@@ -1,0 +1,34 @@
+# PROJETO: Pipeline de Dados IoT
+# VERSÃO: 1.0.0
+# AUTOR: Bruna Coelho
+# DESCRIÇÃO: Orquestração da infraestrutura de banco de dados PostgreSQL
+
+version: '3.8'
+
+services:
+  # Serviço de Banco de Dados Relacional
+  db-iot:
+    image: postgres:latest
+    container_name: postgres-iot
+    restart: always # Garante que o banco reinicie em caso de falha
+    environment:
+      # Credenciais de acesso (Devem coincidir com o main.py)
+      POSTGRES_USER: bruna
+      POSTGRES_PASSWORD: adminadmin
+      POSTGRES_DB: iot_db
+    ports:
+      - "5432:5432" # Porta padrão do PostgreSQL
+    networks:
+      - iot_network
+    volumes:
+      # Persistência de dados: mapeia os dados do banco para uma pasta segura
+      - postgres_data:/var/lib/postgresql
+
+# Configuração de Redes e Volumes
+networks:
+  iot_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
